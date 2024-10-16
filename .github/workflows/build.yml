@@ -32,7 +32,7 @@ jobs:
     - name: Build Executable
       run: |
         cd zed
-        git checkout tags/v0.157.4
+        git checkout tags/v0.157.5
         cargo build --release
 
     - name: Compile Setup Wizard

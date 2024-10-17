@@ -3,7 +3,6 @@ name: Build Zed for Windows
 on:
   workflow_dispatch:
 
-
 jobs:
   Build:
     runs-on: windows-latest
@@ -32,7 +31,10 @@ jobs:
     - name: Build Executable
       run: |
         cd zed
-        git checkout tags/v0.157.5
+        git fetch --tags
+        TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+        echo "TAG=$TAG" >> $GITHUB_ENV
+        git checkout $TAG
         cargo build --release
 
     - name: Compile Setup Wizard
@@ -40,13 +42,12 @@ jobs:
       with:
         path: zed_wizard.iss
         options: /O+
-        
+
     - name: Upload Setup Wizard
       uses: actions/upload-artifact@v4
       with:
         name: setup
         path: Output\zed_setup.exe
-
 
   Upload:
     needs: Build
@@ -66,17 +67,11 @@ jobs:
           git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
           git config --global user.name github-actions[bot]
 
-      - name: Generate Release Tag
-        id: tag
-        run: |
-          echo "::set-output name=release_tag::$(date +"%Y.%m.%d")"
-          echo "::set-output name=release_date::$(date +"%Y.%m.%d")"     
-          
       - name: Upload to Releases
         uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: ${{ steps.tag.outputs.release_date }} Zed Windows
-          tag_name: ${{ steps.tag.outputs.release_tag }}
+          name: ${{ env.TAG }} Zed Windows
+          tag_name: ${{ env.TAG }}
           files: Output/zed_setup.exe

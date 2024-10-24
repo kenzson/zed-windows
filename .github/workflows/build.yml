@@ -7,6 +7,9 @@ jobs:
   Build:
     runs-on: windows-latest
 
+    outputs:
+      TAG: ${{ steps.set_tag.outputs.TAG }}
+
     steps:
     - name: Checkout
       uses: actions/checkout@main
@@ -29,11 +32,13 @@ jobs:
         git clone https://github.com/zed-industries/zed -b main zed
 
     - name: Build Executable
+      id: set_tag
       run: |
         cd zed
         git fetch --tags
         $tag = git describe --tags (git rev-list --tags --max-count=1)
         echo "TAG=$tag" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        echo "::set-output name=TAG::$tag"
         git checkout $tag
         cargo build --release
 
@@ -72,6 +77,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: ${{ env.TAG }} Zed Windows
-          tag_name: ${{ env.TAG }}
+          name: ${{ needs.Build.outputs.TAG }} Zed Windows
+          tag_name: ${{ needs.Build.outputs.TAG }}
           files: Output/zed_setup.exe

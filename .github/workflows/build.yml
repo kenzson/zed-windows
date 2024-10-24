@@ -32,9 +32,9 @@ jobs:
       run: |
         cd zed
         git fetch --tags
-        TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
-        echo "TAG=$TAG" >> $GITHUB_ENV
-        git checkout $TAG
+        $tag = git describe --tags (git rev-list --tags --max-count=1)
+        echo "TAG=$tag" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        git checkout $tag
         cargo build --release
 
     - name: Compile Setup Wizard

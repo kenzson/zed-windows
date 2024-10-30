@@ -31,7 +31,7 @@ jobs:
     - name: Build Executable
       run: |
         cd zed
-        git checkout tags/v0.158.2
+        git checkout tags/v0.159.5
         cargo build --release
 
     - name: Compile Setup Wizard
@@ -69,6 +69,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: v0.158.2 Zed Windows
-          tag_name: v0.158.2
+          name: v0.159.5 Zed Windows
+          tag_name: v0.159.5
           files: Output/zed_setup.exe

@@ -19,9 +19,8 @@ jobs:
 
     - name: Set Cargo Home and Target Directory
       run: |
-        [System.Environment]::SetEnvironmentVariable('CARGO_HOME', 'C:\cargo', [System.EnvironmentVariableTarget]::Process)
-        [System.Environment]::SetEnvironmentVariable('CARGO_TARGET_DIR', 'C:\cargo_target', [System.EnvironmentVariableTarget]::Process)
-      shell: pwsh
+        echo "CARGO_HOME=C:\cargo" >> $GITHUB_ENV
+        echo "CARGO_TARGET_DIR=C:\cargo_target" >> $GITHUB_ENV
 
     - name: Install .NET Core
       uses: actions/setup-dotnet@v4
@@ -45,6 +44,9 @@ jobs:
         cd zed
         git checkout tags/v0.159.5
         cargo build --release
+      env:
+        CARGO_HOME: C:\cargo
+        CARGO_TARGET_DIR: C:\cargo_target
 
     - name: Compile Setup Wizard
       uses: Minionguyjpro/Inno-Setup-Action@v1.2.2

@@ -14,13 +14,14 @@ jobs:
     - name: Enable Long Paths
       run: |
         reg add HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem /v LongPathsEnabled /t REG_DWORD /d 1 /f
-        timeout /t 5
+        Start-Sleep -Seconds 5
+      shell: pwsh
 
     - name: Set Cargo Home and Target Directory
       run: |
-        setx CARGO_HOME C:\cargo
-        setx CARGO_TARGET_DIR C:\cargo_target
-      shell: cmd
+        [System.Environment]::SetEnvironmentVariable('CARGO_HOME', 'C:\cargo', [System.EnvironmentVariableTarget]::Process)
+        [System.Environment]::SetEnvironmentVariable('CARGO_TARGET_DIR', 'C:\cargo_target', [System.EnvironmentVariableTarget]::Process)
+      shell: pwsh
 
     - name: Install .NET Core
       uses: actions/setup-dotnet@v4

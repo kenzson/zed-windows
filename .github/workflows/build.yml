@@ -11,6 +11,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@main
 
+    - name: Enable Long Paths
+      run: |
+        reg add HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem /v LongPathsEnabled /t REG_DWORD /d 1 /f
+
     - name: Install .NET Core
       uses: actions/setup-dotnet@v4
       with:
@@ -26,18 +30,18 @@ jobs:
       run: |
         git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
         git config --global user.name github-actions[bot]
-        git clone https://github.com/zed-industries/zed -b main C:\src\zed
+        git clone https://github.com/zed-industries/zed -b main zed
 
     - name: Build Executable
       run: |
-        cd C:\src\zed
+        cd zed
         git checkout tags/v0.159.5
         cargo build --release
 
     - name: Compile Setup Wizard
       uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
       with:
-        path: C:\src\zed_wizard.iss
+        path: zed_wizard.iss
         options: /O+
 
     - name: Upload Setup Wizard

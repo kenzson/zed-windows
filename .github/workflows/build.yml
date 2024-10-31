@@ -44,9 +44,22 @@ jobs:
         cd zed
         git checkout tags/v0.159.5
         cargo build --release
+        if (Test-Path "target\release\zed.exe") {
+          Write-Host "Build succeeded and zed.exe exists."
+        } else {
+          Write-Host "Build failed or zed.exe does not exist."
+          exit 1
+        }
       env:
         CARGO_HOME: C:\cargo
         CARGO_TARGET_DIR: C:\cargo_target
+      shell: pwsh
+
+    - name: List Build Output
+      run: |
+        cd zed\target\release
+        dir
+      shell: pwsh
 
     - name: Compile Setup Wizard
       uses: Minionguyjpro/Inno-Setup-Action@v1.2.2

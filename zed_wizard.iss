@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Zed"
-#define MyAppVersion "0.160.7"
+#define MyAppVersion "0.161.1"
 #define MyAppPublisher "Thomas Wu"
 #define MyAppURL "https://github.com/TakumiBC/zed-windows"
 #define MyAppExeName "zed.exe"

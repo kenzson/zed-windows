@@ -42,7 +42,7 @@ jobs:
     - name: Build Executable
       run: |
         cd zed
-        git checkout tags/v0.168.2
+        git checkout tags/v0.169.0-pre
         cargo build --release
         if (Test-Path "C:\cargo_target\release\zed.exe") {
           Write-Host "Build succeeded and zed.exe exists."
@@ -96,6 +96,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: v0.168.2 Zed Windows
-          tag_name: v0.168.2
+          name: v0.169.0-pre Zed Windows
+          tag_name: v0.169.0-pre
           files: Output/zed_setup.exe
